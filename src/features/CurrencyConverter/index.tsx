@@ -1,14 +1,15 @@
 import Clock from "./Clock";
-import Form from "./Form";
+import CurrencyForm from "./Form/form";
 import { Content, Header } from "./styled";
 
 const CurrencyConverter = () => {
     return (
         <Content>
-            <Clock/>
+            <Clock />
             <Header>Kalkulator walutowy</Header>
-            <Form/>
-        </Content>)
+            <CurrencyForm />
+        </Content>
+    )
 };
 
 export default CurrencyConverter;
