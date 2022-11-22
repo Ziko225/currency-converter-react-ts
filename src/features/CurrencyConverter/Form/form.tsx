@@ -2,26 +2,21 @@ import { useState } from "react";
 import { Input, Select, Block, Bottom, Error } from "./styled";
 import { useRatesData } from "./useRatesData";
 
-const Form = () => {
-    const { data, status } = useRatesData();
+const CurrencyForm = () => {
+    const { data } = useRatesData();
 
     const [currencyFrom, setCurrencyFrom] = useState("PLN");
-    const onSelectChangeFrom = ({ target }:any) => setCurrencyFrom(target.value);
+    const onSelectChangeFrom = (e: React.ChangeEvent<HTMLSelectElement>) => setCurrencyFrom(e.target.value);
 
     const [currencyTo, setCurrencyTo] = useState("USD");
-    const onSelectChangeTo = ({ target }:any) => setCurrencyTo(target.value);
+    const onSelectChangeTo = (e: React.ChangeEvent<HTMLSelectElement>) => setCurrencyTo(e.target.value);
 
-    const [amount, setAmmount] = useState(Number);
-    const amountChange = ({ target }:any) => setAmmount(target.value);
+    const [amount, setAmmount] = useState(0);
+    const amountChange = (e: React.ChangeEvent<HTMLInputElement>) => setAmmount(+e.target.value);
 
+    // @ts-ignore
+    const result = (amount * data.rates[currencyTo]) / data.rates[currencyFrom];
 
-    const result = 5
-
-    if (status === "error") {
-        return <Error>Ups, coś poszło nie tak!</Error>
-    } else if (status === "loading") {
-        return <h2>Ładowanie . . .</h2>
-    }
     return (
         <form >
             <Block>
@@ -75,4 +70,4 @@ const Form = () => {
     );
 };
 
-export default Form;
+export default CurrencyForm;
