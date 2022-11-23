@@ -181,10 +181,9 @@ export const useRatesData = () => {
     useEffect(() => {
         const getDate = async () => {
             try {
-                const response = await axios.get("httpss://api.exchangerate.host/latest")
+                const response = await axios.get("https://api.exchangerate.host/latest")
                 setDate(response.data);
                 setStatus("ok")
-                console.log(data)
             } catch (error) {
                 setStatus("error")
             }
