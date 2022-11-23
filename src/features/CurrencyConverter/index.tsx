@@ -1,5 +1,5 @@
 import Clock from "./Clock";
-import CurrencyForm from "./Form/form";
+import CurrencyForm from "./Form";
 import { Content, Header } from "./styled";
 
 const CurrencyConverter = () => {

@@ -1,43 +1,65 @@
 import { useState } from "react";
-import { Input, Select, Block, Bottom, Error } from "./styled";
+import { Input, Select, Block, BottomText } from "./styled";
 import { useRatesData } from "./useRatesData";
 
-const CurrencyForm = () => {
+const Form = () => {
     const { data } = useRatesData();
+    const rates = data.rates;
 
-    const [currencyFrom, setCurrencyFrom] = useState("PLN");
-    const onSelectChangeFrom = (e: React.ChangeEvent<HTMLSelectElement>) => setCurrencyFrom(e.target.value);
+    const [amount1, setAmmount1] = useState(Number);
+    const [amount2, setAmmount2] = useState(Number);
 
-    const [currencyTo, setCurrencyTo] = useState("USD");
-    const onSelectChangeTo = (e: React.ChangeEvent<HTMLSelectElement>) => setCurrencyTo(e.target.value);
+    const [currency1, setCurrency1] = useState("PLN");
+    const [currency2, setCurrency2] = useState("USD");
 
-    const [amount, setAmmount] = useState(0);
-    const amountChange = (e: React.ChangeEvent<HTMLInputElement>) => setAmmount(+e.target.value);
+    const handleAmount1Change = (amount1: React.ChangeEvent<HTMLInputElement> | any) => {
+        setAmmount1(amount1.target.value);
+        // @ts-ignore
+        const result1 = amount1.target.value * rates[currency1] / rates[currency2];
+        setAmmount2(+result1.toFixed(3));
+    };
 
-    // @ts-ignore
-    const result = (amount * data.rates[currencyTo]) / data.rates[currencyFrom];
+    const handleCurrency1Changne = (currency1: React.ChangeEvent<HTMLSelectElement>) => {
+        // @ts-ignore
+        setAmmount2(+amount1 * rates[currency1 / rates[currency2]]);
+        setCurrency1(currency1.currentTarget.value);
+    };
+
+    const handleAmount2Change = (amount2: React.ChangeEvent<HTMLInputElement> | any) => {
+
+        setAmmount2(amount2.target.value);
+        // @ts-ignore
+        const result2 = amount2.target.value * rates[currency2] / rates[currency1];
+        setAmmount1(+result2.toFixed(2));
+    };
+
+    const handleCurrency2Changne = (currency2: React.ChangeEvent<HTMLSelectElement>) => {
+        // @ts-ignore
+        setAmmount1(+amount2 * rates[currency2 / rates[currency1]]);
+        setCurrency2(currency2.currentTarget.value);
+    };
 
     return (
         <form >
             <Block>
                 <label>
-                    <Input placeholder="Wpisz kwotę"
+                    <Input
+                        placeholder="Wpisz kwotę"
                         min="0"
                         type="number"
-                        value={amount}
-                        onChange={amountChange}
+                        value={amount1}
+                        onChange={handleAmount1Change}
                     />
                 </label>
                 <label>
                     <Select
-                        name="currencyFrom"
-                        value={currencyFrom}
-                        onChange={onSelectChangeFrom}>
+                        name="currency1"
+                        value={currency1}
+                        onChange={handleCurrency1Changne}>
                         {Object.keys(data.rates).map((currency) => (
-                            <option
-                                key={currency}
-                                value={currency}
-                            >{currency}</option>
+                            <option key={currency} value={currency}>
+                                {currency}
+                            </option>
                         ))}
                     </Select>
                 </label>
@@ -45,29 +67,29 @@ const CurrencyForm = () => {
             <Block>
                 <label>
                     <Input
-                        disabled
-                        value={result < 0 ? "N/A" : result.toFixed(2)
-                            &&
-                            currencyFrom === currencyTo ? "same currency detected" : result.toFixed(2)} />
+                        placeholder="Wpisz kwotę"
+                        min="0"
+                        type="number"
+                        value={amount2}
+                        onChange={handleAmount2Change} />
                 </label>
                 <label>
                     <Select
-                        name="currencyTo"
-                        value={currencyTo}
-                        onChange={onSelectChangeTo} >
+                        name="currency2"
+                        value={currency2}
+                        onChange={handleCurrency2Changne} >
                         {Object.keys(data.rates).map((currency) => (
-                            <option
-                                key={currency}
-                                value={currency}
-                            >{currency}</option>
+                            <option key={currency} value={currency}>
+                                {currency}
+                            </option>
                         ))}
                     </Select>
                 </label>
             </Block>
-            <Bottom>kursy walut pobierane są bezpośrednio z baz danych Komisji Europejskiej.</Bottom>
-            <Bottom>Aktualne na dzień: {data.date}</Bottom>
+            <BottomText>kursy walut pobierane są bezpośrednio z baz danych Komisji Europejskiej.</BottomText>
+            <BottomText>Aktualne na dzień: {data.date}</BottomText>
         </form>
     );
 };
 
-export default CurrencyForm;
+export default Form;

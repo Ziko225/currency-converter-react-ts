@@ -28,7 +28,7 @@ export const Block = styled.div`
     padding: 10px;
 `;
 
-export const Bottom = styled.p`
+export const BottomText = styled.p`
     font-family: 'Inconsolata', monospace;
     margin-bottom: 0;
 `;
