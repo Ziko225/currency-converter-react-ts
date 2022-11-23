@@ -10,7 +10,12 @@ const CurrencyForm = () => {
             return (< h3 > ładowanie...</h3 >)
         case "ok":
             return (<Form />)
-        default: return (< Error > Coś poszło nie tak!</Error >)
+        default: return (
+            <>
+                <Form />
+                <Error>brak połączenia z serwerem!</Error>
+            </>
+        )
     }
 };
 

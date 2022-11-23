@@ -33,6 +33,6 @@ export const BottomText = styled.p`
     margin-bottom: 0;
 `;
 
-export const Error = styled.h3`
+export const Error = styled.p`
     color: #FF4749;
 `;
