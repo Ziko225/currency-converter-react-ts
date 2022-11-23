@@ -12,10 +12,10 @@ const Form = () => {
     const [currency1, setCurrency1] = useState("PLN");
     const [currency2, setCurrency2] = useState("USD");
 
-    const handleAmount1Change = (amount1: React.ChangeEvent<HTMLInputElement> | any) => {
-        setAmmount1(amount1.target.value);
+    const handleAmount1Change = (amount1: React.ChangeEvent<HTMLInputElement>) => {
+        setAmmount1(+amount1.target.value);
         // @ts-ignore
-        const result1 = amount1.target.value * rates[currency2] / rates[currency1];
+        const result1 = +amount1.target.value * rates[currency2] / rates[currency1];
         setAmmount2(+result1.toFixed(3));
     };
 
@@ -23,10 +23,10 @@ const Form = () => {
         setCurrency1(currency1.target.value);
     };
 
-    const handleAmount2Change = (amount2: React.ChangeEvent<HTMLInputElement> | any) => {
-        setAmmount2(amount2.target.value);
+    const handleAmount2Change = (amount2: React.ChangeEvent<HTMLInputElement>) => {
+        setAmmount2(+amount2.target.value);
         // @ts-ignore
-        const result2 = amount2.target.value * rates[currency1] / rates[currency2];
+        const result2 = +amount2.target.value * rates[currency1] / rates[currency2];
         setAmmount1(+result2.toFixed(3));
     };
 
