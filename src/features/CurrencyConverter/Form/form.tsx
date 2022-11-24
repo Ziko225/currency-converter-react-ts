@@ -21,6 +21,8 @@ const Form = () => {
 
     const handleCurrency1Changne = (currency1: React.ChangeEvent<HTMLSelectElement>) => {
         setCurrency1(currency1.target.value);
+        // @ts-ignore
+        setAmmount2((+amount1 * rates[currency2] / rates[currency1.target.value]).toFixed(3));
     };
 
     const handleAmount2Change = (amount2: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +34,11 @@ const Form = () => {
 
     const handleCurrency2Changne = (currency2: React.ChangeEvent<HTMLSelectElement>) => {
         setCurrency2(currency2.target.value);
+        // @ts-ignore
+        setAmmount1((+amount2 * rates[currency1] / rates[currency2.target.value]).toFixed(3));
     };
+
+
 
     return (
         <form >
