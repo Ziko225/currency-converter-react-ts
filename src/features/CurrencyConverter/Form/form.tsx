@@ -6,39 +6,33 @@ const Form = () => {
     const { data } = useRatesData();
     const rates = data.rates;
 
-    const [amount1, setAmmount1] = useState(Number);
-    const [amount2, setAmmount2] = useState(Number);
+    const [amount1, setAmmount1] = useState(0);
+    const [amount2, setAmmount2] = useState(0);
 
     const [currency1, setCurrency1] = useState("PLN");
     const [currency2, setCurrency2] = useState("USD");
 
-    const handleAmount1Change = (amount1: React.ChangeEvent<HTMLInputElement>) => {
-        setAmmount1(+amount1.target.value);
-        // @ts-ignore
-        const result1 = +amount1.target.value * rates[currency2] / rates[currency1];
+    const handleAmount1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAmmount1(+e.currentTarget.value);
+        const result1 = +e.currentTarget.value * rates[currency2 as keyof typeof rates] / rates[currency1 as keyof typeof rates];
         setAmmount2(+result1.toFixed(3));
     };
 
-    const handleCurrency1Changne = (currency1: React.ChangeEvent<HTMLSelectElement>) => {
-        setCurrency1(currency1.target.value);
-        // @ts-ignore
-        setAmmount2((+amount1 * rates[currency2] / rates[currency1.target.value]).toFixed(3));
+    const handleCurrency1Changne = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCurrency1(e.currentTarget.value);
+        setAmmount2(amount1 * rates[currency2 as keyof typeof rates] / rates[e.currentTarget.value as keyof typeof rates]);
     };
 
-    const handleAmount2Change = (amount2: React.ChangeEvent<HTMLInputElement>) => {
-        setAmmount2(+amount2.target.value);
-        // @ts-ignore
-        const result2 = +amount2.target.value * rates[currency1] / rates[currency2];
+    const handleAmount2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAmmount2(+e.currentTarget.value);
+        const result2 = +e.target.value * rates[currency1 as keyof typeof rates] / rates[currency2 as keyof typeof rates];
         setAmmount1(+result2.toFixed(3));
     };
 
-    const handleCurrency2Changne = (currency2: React.ChangeEvent<HTMLSelectElement>) => {
-        setCurrency2(currency2.target.value);
-        // @ts-ignore
-        setAmmount1((+amount2 * rates[currency1] / rates[currency2.target.value]).toFixed(3));
+    const handleCurrency2Changne = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCurrency2(e.currentTarget.value);
+        setAmmount1(+amount2 * rates[currency1 as keyof typeof rates] / rates[e.currentTarget.value as keyof typeof rates]);
     };
-
-
 
     return (
         <form >
@@ -48,7 +42,7 @@ const Form = () => {
                         placeholder="Wpisz kwotę"
                         min="0"
                         type="number"
-                        value={amount1}
+                        value={amount1 === 0 ? "" : amount1}
                         onChange={handleAmount1Change}
                     />
                 </label>
@@ -71,7 +65,7 @@ const Form = () => {
                         placeholder="Wpisz kwotę"
                         min="0"
                         type="number"
-                        value={amount2}
+                        value={amount2 === 0 ? "" : amount2}
                         onChange={handleAmount2Change} />
                 </label>
                 <label>
