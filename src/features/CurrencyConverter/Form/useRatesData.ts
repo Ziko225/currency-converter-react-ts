@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const useRatesData = () => {
-    const [data, setDate] = useState({
+    const [status, setStatus] = useState("loading");
+    const [data, setData] = useState({
         date: "2022-11-22",
         rates: {
             "AED": 3.767522,
@@ -176,20 +177,18 @@ export const useRatesData = () => {
             "ZWL": 330.188891
         }
     });
-    const [status, setStatus] = useState("loading");
-
     useEffect(() => {
-        const getDate = async () => {
-            try {
-                const response = await axios.get("https://api.exchangerate.host/latest")
-                setDate(response.data);
-                setStatus("ok")
-            } catch (error) {
-                setStatus("error")
-            }
-        };
-        setTimeout(getDate, 1000);
-    }, []);
+        axios.get("https://api.exchangerate.host/latest")
+            .then((response) => {
+                if (response.data) {
+                    setData(response.data);
+                    setTimeout(() => setStatus("ok"), 400);
+                } else { setStatus("error"); }
+            })
+            .catch(() => {
+                setStatus("error");
+            })
+    }, [])
 
     return { data, status };
 };
